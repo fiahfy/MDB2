@@ -330,6 +330,9 @@ class MDB2_Driver_sqlsrv extends MDB2_Driver_Common
         if ($database) {
             $params['Database'] = $database;
         }
+        if (!empty($this->dsn['charset'])) {
+            $params['CharacterSet'] = $this->dsn['charset'];
+        }
 
         if ($this->dsn['port'] && $this->dsn['port'] != 1433) {
             $host .= ','.$this->dsn['port'];
@@ -342,13 +345,6 @@ class MDB2_Driver_sqlsrv extends MDB2_Driver_Common
         }
         if (null !== $database) {
             $this->connected_database_name = $database;
-        }
-
-        if (!empty($this->dsn['charset'])) {
-            $result = $this->setCharset($this->dsn['charset'], $connection);
-            if (MDB2::isError($result)) {
-                return $result;
-            }
         }
 
        if (empty($this->dsn['disable_iso_date'])) {
